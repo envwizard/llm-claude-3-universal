@@ -1,0 +1,47 @@
+{
+  "name": "LLM Claude 3 Universal Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-vscode.vscode-json"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/bin/python",
+        "python.terminal.activateEnvironment": true
+      }
+    }
+  },
+  "forwardPorts": [
+    8000,
+    8080,
+    3000
+  ],
+  "portsAttributes": {
+    "8000": {
+      "label": "Port 8000",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Port 8080",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "Port 3000",
+      "onAutoForward": "notify"
+    }
+  },
+  "postCreateCommand": "echo '\ud83c\udf89 LLM Claude 3 universal environment is ready!' && echo 'Run: llm keys set claude' to configure your API key",
+  "remoteEnv": {
+    "PYTHONPATH": "/workspace/llm-claude-3",
+    "DEVELOPMENT": "true"
+  },
+  "shutdownAction": "stopContainer"
+}
