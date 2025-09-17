@@ -11,20 +11,20 @@ WORKDIR /workspace
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 # Clone repository
-RUN git clone https://github.com/simonw/llm-claude-3.git /workspace/llm-claude-3 && cd /workspace/llm-claude-3 && git checkout c62bf247fa964ff350badf5424743ddca7601d4a
+RUN git clone https://github.com/simonw/llm-claude-3.git /workspace/repo && cd /workspace/repo && git checkout c62bf247fa964ff350badf5424743ddca7601d4a
 
-WORKDIR /workspace/llm-claude-3
+WORKDIR /workspace/repo
 
 # Create script to copy repository content to workspace
 RUN echo '#!/bin/bash' > /usr/local/bin/copy-repo.sh && \
     echo 'echo "Copying repository content to workspace..."' >> /usr/local/bin/copy-repo.sh && \
-    echo 'if [ -d "/workspace/llm-claude-3" ] && [ -d "/workspaces" ]; then' >> /usr/local/bin/copy-repo.sh && \
+    echo 'if [ -d "/workspace/repo" ] && [ -d "/workspaces" ]; then' >> /usr/local/bin/copy-repo.sh && \
     echo '  # Find the workspace directory' >> /usr/local/bin/copy-repo.sh && \
     echo '  WORKSPACE_DIR=$(find /workspaces -maxdepth 1 -type d ! -path /workspaces | head -1)' >> /usr/local/bin/copy-repo.sh && \
     echo '  if [ -n "$WORKSPACE_DIR" ] && [ -d "$WORKSPACE_DIR" ]; then' >> /usr/local/bin/copy-repo.sh && \
     echo '    echo "Found workspace directory: $WORKSPACE_DIR"' >> /usr/local/bin/copy-repo.sh && \
     echo '    # Copy repository files to workspace directory' >> /usr/local/bin/copy-repo.sh && \
-    echo '    cp -r /workspace/llm-claude-3/. "$WORKSPACE_DIR/" 2>/dev/null || true' >> /usr/local/bin/copy-repo.sh && \
+    echo '    cp -r /workspace/repo/. "$WORKSPACE_DIR/" 2>/dev/null || true' >> /usr/local/bin/copy-repo.sh && \
     echo '    echo "Repository files copied to workspace"' >> /usr/local/bin/copy-repo.sh && \
     echo '  else' >> /usr/local/bin/copy-repo.sh && \
     echo '    echo "No workspace directory found"' >> /usr/local/bin/copy-repo.sh && \
