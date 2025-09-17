@@ -38,11 +38,11 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": "/usr/local/bin/copy-repo.sh && echo '\ud83c\udf89 LLM Claude 3 universal environment is ready!' && echo 'Run: llm keys set claude' to configure your API key",
   "remoteEnv": {
     "PYTHONPATH": "/workspace/llm-claude-3",
     "DEVELOPMENT": "true"
   },
   "shutdownAction": "stopContainer",
+  "postCreateCommand": "/usr/local/bin/copy-repo.sh && echo '\ud83c\udf89 LLM Claude 3 universal environment is ready!' && echo 'Run: llm keys set claude' to configure your API key",
   "remoteUser": "developer"
 }
