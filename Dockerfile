@@ -52,6 +52,8 @@ RUN echo '#!/bin/bash' > /tmp/setup.sh && \
     chmod +x /tmp/setup.sh && \
     /tmp/setup.sh
 
+# Create user developer
+RUN useradd -m -s /bin/bash developer
 USER developer
 
 EXPOSE 8000
