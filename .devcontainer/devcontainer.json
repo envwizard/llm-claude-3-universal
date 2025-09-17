@@ -43,5 +43,6 @@
     "PYTHONPATH": "/workspace/llm-claude-3",
     "DEVELOPMENT": "true"
   },
-  "shutdownAction": "stopContainer"
+  "shutdownAction": "stopContainer",
+  "remoteUser": "developer"
 }
