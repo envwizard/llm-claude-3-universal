@@ -1,8 +1,8 @@
 {
   "name": "LLM Claude 3 Universal Environment",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": "."
+    "dockerfile": "../Dockerfile",
+    "context": ".."
   },
   "features": {},
   "customizations": {
