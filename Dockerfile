@@ -17,9 +17,20 @@ WORKDIR /workspace/llm-claude-3
 
 # Create script to copy repository content to workspace
 RUN echo '#!/bin/bash' > /usr/local/bin/copy-repo.sh && \
-    echo 'if [ -d "/workspaces" ] && [ "$(ls -A /workspaces 2>/dev/null | wc -l)" -eq "0" ]; then' >> /usr/local/bin/copy-repo.sh && \
-    echo '  echo "Copying repository content to workspace..."' >> /usr/local/bin/copy-repo.sh && \
-    echo '  cp -r /workspace/llm-claude-3/. /workspaces/ 2>/dev/null || true' >> /usr/local/bin/copy-repo.sh && \
+    echo 'echo "Copying repository content to workspace..."' >> /usr/local/bin/copy-repo.sh && \
+    echo 'if [ -d "/workspace/llm-claude-3" ] && [ -d "/workspaces" ]; then' >> /usr/local/bin/copy-repo.sh && \
+    echo '  # Find the workspace directory' >> /usr/local/bin/copy-repo.sh && \
+    echo '  WORKSPACE_DIR=$(find /workspaces -maxdepth 1 -type d ! -path /workspaces | head -1)' >> /usr/local/bin/copy-repo.sh && \
+    echo '  if [ -n "$WORKSPACE_DIR" ] && [ -d "$WORKSPACE_DIR" ]; then' >> /usr/local/bin/copy-repo.sh && \
+    echo '    echo "Found workspace directory: $WORKSPACE_DIR"' >> /usr/local/bin/copy-repo.sh && \
+    echo '    # Copy repository files to workspace directory' >> /usr/local/bin/copy-repo.sh && \
+    echo '    cp -r /workspace/llm-claude-3/. "$WORKSPACE_DIR/" 2>/dev/null || true' >> /usr/local/bin/copy-repo.sh && \
+    echo '    echo "Repository files copied to workspace"' >> /usr/local/bin/copy-repo.sh && \
+    echo '  else' >> /usr/local/bin/copy-repo.sh && \
+    echo '    echo "No workspace directory found"' >> /usr/local/bin/copy-repo.sh && \
+    echo '  fi' >> /usr/local/bin/copy-repo.sh && \
+    echo 'else' >> /usr/local/bin/copy-repo.sh && \
+    echo '  echo "Source or target directory not found"' >> /usr/local/bin/copy-repo.sh && \
     echo 'fi' >> /usr/local/bin/copy-repo.sh && \
     chmod +x /usr/local/bin/copy-repo.sh
 
