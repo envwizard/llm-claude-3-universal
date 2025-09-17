@@ -1,18 +1,27 @@
 FROM ubuntu:22.04
 
+# Environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 WORKDIR /workspace
 
-# Install git if not present
+# Install git if not present (most base images have it, but just in case)
 RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 # Clone repository
 RUN git clone https://github.com/simonw/llm-claude-3.git /workspace/llm-claude-3 && cd /workspace/llm-claude-3 && git checkout c62bf247fa964ff350badf5424743ddca7601d4a
 
 WORKDIR /workspace/llm-claude-3
+
+# Create script to copy repository content to workspace
+RUN echo '#!/bin/bash' > /usr/local/bin/copy-repo.sh && \
+    echo 'if [ -d "/workspaces" ] && [ "$(ls -A /workspaces 2>/dev/null | wc -l)" -eq "0" ]; then' >> /usr/local/bin/copy-repo.sh && \
+    echo '  echo "Copying repository content to workspace..."' >> /usr/local/bin/copy-repo.sh && \
+    echo '  cp -r /workspace/llm-claude-3/. /workspaces/ 2>/dev/null || true' >> /usr/local/bin/copy-repo.sh && \
+    echo 'fi' >> /usr/local/bin/copy-repo.sh && \
+    chmod +x /usr/local/bin/copy-repo.sh
 
 # Setup script
 RUN echo '#!/bin/bash' > /tmp/setup.sh && \
